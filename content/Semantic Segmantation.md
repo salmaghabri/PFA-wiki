@@ -38,6 +38,5 @@ Two different classes of architectures evolved in the literature to tackle this 
 ![[Pasted image 20240302215659.png]]
  [dilated/atrous convolutions](https://blog.qure.ai/notes/semantic-segmentation-deep-learning-review#dilation)
 
-[Conditional Random Field (CRF) postprocessing](https://arxiv.org/abs/1210.5644)
 # to improve the segmentation
 [Conditional Random Field (CRF) postprocessing](https://arxiv.org/abs/1210.5644)

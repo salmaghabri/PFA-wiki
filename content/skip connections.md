@@ -17,3 +17,7 @@ source:
 # Drawbacks
 - increase complexity and memory requirements,
 - introduce redundancy and noise, and require careful design and tuning to match the network architecture and data domain
+# In summary
+skip connections are links between layers at the same subsampling  scale before and after the encoding part of an encoder-decoder architecture. The motivation for this is to complement the more abstract and less localized information of the encoded information with the spatial details that are present in the earlier layers of the network to produce accurate class prediction with precise boundaries in the output image.
+or 
+connect directly layers in earlier stages of the network to layers at later stages to recover accurate spatial information of region boundaries.

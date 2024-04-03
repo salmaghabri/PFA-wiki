@@ -1,5 +1,5 @@
 ---
-paper: 
+paper: https://arxiv.org/abs/1603.07285
 resource: https://github.com/vdumoulin/conv_arithmetic/blob/master/README.md
 ---
 affine transformations: a vector is received as input and is multiplied with a matrix to produce an output (to which a bias vector is usually added before passing the result through a nonlinearity).

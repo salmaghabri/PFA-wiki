@@ -17,7 +17,7 @@ two main steps:
 A well established family of change detection methods is change **vector analysis (CVA)**, considering the multispectral difference vector in polar or hyperspherical coordinates and attempting to characterise the changes based on the associated vectors at each pixel
 Change detection algorithms can  be split into 
 1. supervised and unsupervised groups.
-2. pixel based and object based : attempts to identify whether or not a change has occurred at each pixel in the image pair, while the latter methods attempt to first group pixels that belong to the same object and use information such as the object’s colour, shape and neighbourhood to help determine if that object has been changed between the acquisitions
+2. pixel based and object based : the former attempts to identify whether or not a change has occurred at each pixel in the image pair, while the latter methods attempt to first group pixels that belong to the same object and use information such as the object’s colour, shape and neighbourhood to help determine if that object has been changed between the acquisitions
 ## Unsupervised methods
 - Many of these methods automatically analyse the data in difference images and detect patterns that correspond to changes .
 - Other methods use unsupervised learning approaches such as iterative training (Liu et al., 2016)
@@ -33,7 +33,7 @@ Change detection algorithms can  be split into
 While transfer learning is a valid solution, it is also limiting.
 	- end-to-end training tends to achieve the best results for a given problem when possible.
 	- Transfer learning also assumes that all images are of the same type. As most large scale datasets contain RGB images, this means that extra bands contained in multispectral images must be ignored
-- Several works have used CNNs to generate the difference im age that was described earlier, followed by traditional thresholding methods on those images
+- Several works have used CNNs to generate the difference image that was described earlier, followed by traditional thresholding methods on those images
 	1.  x proposed using the activation of pre-trained CNNs to gener ate descriptors for each pixel, and using the Euclidean distance between these descriptors to build the difference image.
 	2. y trained a network to produce a 16-dimensional de scriptor for each pixel.
 	-  Descriptors were similar for pixels with no change and dissimilar for pixels that experienced change.
