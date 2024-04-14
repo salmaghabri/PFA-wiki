@@ -22,5 +22,5 @@ They employ solely locally connected layers, such as [convolution](https://pape
 
 The network consists of a downsampling path, used to extract and interpret the context, and an upsampling path, which allows for localization.
 
-FCNs also employ [[ skip connections]] to recover the fine-grained spatial information lost in the downsampling path.
+FCNs also employ [[Skip connections]] to recover the fine-grained spatial information lost in the downsampling path.
 https://paperswithcode.com/method/fcn

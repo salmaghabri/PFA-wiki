@@ -119,7 +119,7 @@ Since it has been proven before that FCNNs are able to perform both binary chang
  - an evolution of the previous strategy of using two FCNNs for the tasks of binary change detection and land cover mapping.
  - integrate the two FCNNs into a single multitask network so that land cover information can be used for change detection.
  - takes as input the two co-registered images and outputs three maps: the binary change map and the two land cover maps.
- - information from the **land cover mapping branches** of the network is passed to the **change detection branch** of the network in the form of difference [[skip connections]], which was shown to be the most effective form of skip connections for Siamese FCNNs (Daudt et al., 2018a).
+ - information from the **land cover mapping branches** of the network is passed to the **change detection branch** of the network in the form of difference [[Skip connections]], which was shown to be the most effective form of skip connections for Siamese FCNNs (Daudt et al., 2018a).
  - The weights of the two land cover mapping branches are shared since they perform an identical task, allowing us to significantly reduce the number of learned parameters.
  ![[Pasted image 20240303164810.png]]
 

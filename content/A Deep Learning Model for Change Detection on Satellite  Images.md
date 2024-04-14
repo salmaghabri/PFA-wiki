@@ -22,7 +22,7 @@ In this paper, we present a method proposed in [[Multitask learning for large-sc
 1. The pair of images are normalized by their mean and standard deviation.
 2. the images are concatenated along the spectral axis, meaning that each image of the pair is treated as a different color channel. ( **early fusion**).
 ## Skip Connections
-- [[skip connections]] help to solve the degradation problem, induced by the encoder-decoder architecture, by linking together the layers with the same subsampling scale in the encoder part and the decoder part of the network.
+- [[Skip connections]] help to solve the degradation problem, induced by the encoder-decoder architecture, by linking together the layers with the same subsampling scale in the encoder part and the decoder part of the network.
 - **Skip connections** also allow to combine the abstract information of the last layers and the spatial details contained in the first layers.
 ## Residual blocks
 - **The residual blocks** also include skip connections.
