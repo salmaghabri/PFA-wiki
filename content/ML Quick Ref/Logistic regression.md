@@ -1,0 +1,2 @@
+![[Logistic regression.png]]
+Logistic regression measures the relationship between the dependent variable (our label of what we want to predict) and one or more independent variables (our features) by estimating probability using its underlying logistic function ([[Sigmoid]]).

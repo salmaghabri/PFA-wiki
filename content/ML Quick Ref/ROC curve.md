@@ -1,0 +1,4 @@
+- The graph between the True Positive Rate on the y-axis and the False Positive Rate on the x-axis is called the ROC curve and is used in binary classification.
+- In order to construct the ROC curve, the TPR and FPR values are plotted on multiple threshold values. The area range under the ROC curve has a range between 0 and 1. A completely random model, which is represented by a straight line, has a 0.5 ROC. The amount of deviation a ROC has from this straight line denotes the efficiency of the model.
+
+![](https://media.licdn.com/dms/image/D5612AQEX7YBiwqez3Q/article-inline_image-shrink_1500_2232/0/1709208779154?e=1723075200&v=beta&t=CmemhbsDoXFjtM81cZCMRxN01coxaVGn4JuS9Ajj6Sw)

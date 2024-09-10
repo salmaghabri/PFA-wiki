@@ -1,0 +1,1 @@
+1. **Z-Score Normalization**:  Standardization transforms the data to have a mean of 0 and a standard deviation of 1, following a Gaussian distribution.

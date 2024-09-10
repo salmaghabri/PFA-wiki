@@ -1,9 +1,17 @@
+---
+draft: true
+---
 
-# In AlphaPose model a detector 
+# In AlphaPose model a detector
+
 In teh section the goal is to deduce an abstract general representation of a detector
+
 ## api of detectors
-A good first step is to take a look at ``detector/apis.py``: the api of detectors.
+
+A good first step is to take a look at `detector/apis.py`: the api of detectors.
+
 ### get_detector
+
 ```python
 def get_detector(opt=None):
     if opt.detector == 'yolo':
@@ -50,17 +58,20 @@ def get_detector(opt=None):
 
         raise NotImplementedError
 ```
-``get_detector`` gets a set of options (from a yaml file) and depending on the detector attributes returns the class of the configured detector. 
+
+`get_detector` gets a set of options (from a yaml file) and depending on the detector attributes returns the class of the configured detector.
+
 ```python
 if opt.detector == detector_namee:
 	from detector.detectorName import detectorName
 	from detector.detectorName_cfg inmport cfg
 	return DetectorName(cfg,opt)
-	
+
 ```
 
 from those lines we conclude that we'll need a config file that has our detector's name post fixed with cfg and of course the detector's class.
-### ***_cfg.py
+
+### \*\*\*\_cfg.py
 
 let's now see an example of a cfg.py file
 `detector/yolo_cfg.py`
@@ -80,10 +91,11 @@ cfg.NUM_CLASSES = 80
 
 `CONFIG`: config file that has the layers of the model
 `WEIGHTS`: weights of the trained model
-`INP_DIM`:  dimensions of the input images
-`NMS_THRES`:  NMS IOU threshold
+`INP_DIM`: dimensions of the input images
+`NMS_THRES`: NMS IOU threshold
 `CONFIDENCE`: confidence threshold
 `NUM_CLASSES`: number of classes of the dataset that the has been trained with
+
 ### BaseDetector
 
 Before we take a look at a detector class let's see their parent abstacrt class
@@ -108,11 +120,15 @@ class BaseDetector(ABC):
 
         pass
 ```
-Apart from the constructor, we've got three methods: preprocess, detection and detect_one_image. 
+
+Apart from the constructor, we've got three methods: preprocess, detection and detect_one_image.
+
 ## `YOLODetector`
+
 Let's see now a concrete detector class `YOLODetector` . This class is in a file called `yolo_api.py`
 now we'll examine an implementation example of the abstract methods above one by one.
 But first, let's look at the constructor.
+
 ### Constructor
 
 ```python
@@ -137,8 +153,10 @@ def __init__(self, cfg, opt=None):
 
 	self.model = None
 ```
-Here we get the attributes of an instance of ``YOLODetector``.
+
+Here we get the attributes of an instance of `YOLODetector`.
 Notice that model is set to None here and it can beloaded with the next method called `load_model`.
+
 ```python
 def load_model(self):
 	args = self.detector_opt
@@ -159,7 +177,9 @@ def load_model(self):
 
 	self.model.eval()
 ```
+
 This is where we instantiate the model's class. Darknet in this case. We'll take a look at it later after we finish this layer of abstraction.
+
 ### image_preprocess
 
 ```python
@@ -186,8 +206,10 @@ def image_preprocess(self, img_source):
 
 	return img
 ```
+
 (We check if img_source is the image's name or raw image data(ndarray or torch.Tensor,channel GBR))Notice that we do not use orig_img, im_dim_list in both cases
-prep_image and prep_frame are functions from `preprocess.py` that 
+prep_image and prep_frame are functions from `preprocess.py` that
+
 ```python
 """
 Prepare image for inputting to the neural network.
@@ -197,8 +219,11 @@ Returns a Variable
 ```
 
 ###### is this preprocess method common to all the given detectors?
+
 yes.
+
 ### image_detection
+
 ```python
 def images_detection(self, imgs, orig_dim_list):
 	"""
@@ -254,12 +279,14 @@ def images_detection(self, imgs, orig_dim_list):
 		return dets
  
 ```
-input : 
+
+input :
+
 - 'b' represents the batch size
 - `imgs`: (b, 3, h, w) means b images, each with 3 color channels (RGB), height h, and width w.
 - `orig_dim_list`: (b, (w,h,w,h)) means b sets of original dimensions, each containing width, height, width, height (repeated for some reason)
-output: 
-`dets` has shape (n, 8), where each of the n rows contains:
+  output:
+  `dets` has shape (n, 8), where each of the n rows contains:
 - batch_idx: which image in the batch this detection belongs to
 - x1, y1, x2, y2: bounding box coordinates
 - c: confidence score
@@ -268,9 +295,13 @@ output:
 
 > [!IMPORTANT]
 > Below this line her prediction = self.model the method changes from a model to another and that's because the shape of the prediction differs from a model to another
+
 #### YOLO3
+
 ##### dynamic_write_results
+
 designed to dynamically adjust the non-maximum suppression (NMS) confidence threshold to handle cases where there are too many detections.
+
 ```python
 def dynamic_write_results(self, prediction, confidence, num_classes, nms=True, nms_conf=0.4):
 
@@ -291,12 +322,16 @@ def dynamic_write_results(self, prediction, confidence, num_classes, nms=True, n
 		dets = self.write_results(prediction_bak.clone(), confidence, num_classes, nms, nms_conf)
 	return dets
 ```
+
 ##### write_results
+
 where the prost processesing of the dectection happens:
+
 - Filters detections based on confidence.
 - Converts bounding box format from (xc, yc, w, h) to (x1, y1, x2, y2).
 - Applies NMS to the detections
--  Organizes the final detections, including batch index information into ==Alphapose format==
+- Organizes the final detections, including batch index information into ==Alphapose format==
+
 ```python
 def write_results(self, prediction, confidence, num_classes, nms=True, nms_conf=0.4):
 
@@ -500,61 +535,64 @@ def write_results(self, prediction, confidence, num_classes, nms=True, nms_conf=
 	return output
 ```
 
-steps to get to the desired output format: 
-1. Initialize `output`:
-    
-    ```
-    output = prediction.new(1, prediction.size(2) + 1)
-    ```
-This creates a new tensor with 1 row and one more column than the prediction's last dimension.
-    
-2. For each image in the batch:
-    
+steps to get to the desired output format:
+
+1.  Initialize `output`:
+        ```
+        output = prediction.new(1, prediction.size(2) + 1)
+        ```
+    This creates a new tensor with 1 row and one more column than the prediction's last dimension.
+2.  For each image in the batch:
+
     ```
     for ind in range(batch_size):
     ```
-    
-3. Process each image:  
-    a. Get max confidence and class score:    
+
+3.  Process each image:  
+    a. Get max confidence and class score:
+
     ```
     max_conf, max_conf_score = torch.max(image_pred[:,5:5+ num_classes], 1)
     ```
+
     b. Concatenate bounding box, object confidence, max class confidence, and class index:
+
     ```
     seq = (image_pred[:,:5], max_conf, max_conf_score)
     image_pred = torch.cat(seq, 1)
     ```
-    
+
     c. Filter out zero entries:
-    
+
     ```
     non_zero_ind =  (torch.nonzero(image_pred[:,4]))
     image_pred_ = image_pred[non_zero_ind.squeeze(),:].view(-1,7)
     ```
-    
-    d. For each class (focusing on class 0, which is  'person' ):
-    
+
+    d. For each class (focusing on class 0, which is 'person' ):
+
     ```
     for cls in img_classes:
         if cls != 0:
             continue
     ```
-    
-    e. Apply NMS:    
+
+    e. Apply NMS:
+
     ```
     if nms:
         # NMS code here (different for Windows and non-Windows)
     ```
-    
+
     f. Add batch index to detections:
-    
+
     ```
     batch_ind = image_pred_class.new(image_pred_class.size(0), 1).fill_(ind)
     seq = batch_ind, image_pred_class
     ```
-    
+
     g. Concatenate to output:
-   
+
     ```
     if not write:
         output = torch.cat(seq,1)
@@ -565,6 +603,7 @@ This creates a new tensor with 1 row and one more column than the prediction's l
     ```
 
 #### YOLO-x
+
 in yolo x dynamic write is the same as in yolo but instead of write result we've got another function called postprocess (and odes similar processing : transforms bounding boxes, applies confidence thresholds, performs NMS, and collates detections from all images in the batch)
 ``detector/yolox/yolox/utils/boxes.py
 
@@ -664,15 +703,18 @@ def postprocess(
             output = torch.cat((output, detections))
     return output
 ```
+
 Key differences from the previous `write_results`:
 
 1. It uses PyTorch's optimized NMS functions.
-3. It allows filtering for specific classes.
-4. The confidence threshold is applied to the product of objectness and class confidence.
+2. It allows filtering for specific classes.
+3. The confidence threshold is applied to the product of objectness and class confidence.
 
 #### EfficientDet
+
 no dynamic_write results since NMS is done in predection= self.model()
 The conversion from nms output to alphapose format in this snippet
+
 ```python
 for index, sample in enumerate(prediction):
     for det in sample:
@@ -691,13 +733,21 @@ for index, sample in enumerate(prediction):
 ```
 
 ### Model class
+
 finished with each detector's api let's have a look at the self.model of the apis
+
 #### Darknet
+
 # Yolo9: what we got
+
 we'll explore what's already implemented in the yolo9 original paper repo and we'll try to fill the blanks in our abstract detection model
+
 ## preprocessing
+
 ### check image size
- ensures that the input image size is compatible with the model's stride.
+
+ensures that the input image size is compatible with the model's stride.
+
 ```python
 def check_img_size(imgsz, s=32, floor=0):
 
@@ -721,6 +771,7 @@ def check_img_size(imgsz, s=32, floor=0):
 ```
 
 ### In DataLoading
+
 ```python
 bs = 1  # batch_size
 
@@ -753,6 +804,7 @@ im = im[::-1]  # BGR to RGB
 ```
 
 4. Dimension Reordering:
+
 ```python
 im = im.transpose((2, 0, 1))  # HWC to CHW
 ```
@@ -784,7 +836,8 @@ if len(im.shape) == 3:
 ```
 
 ## Loading the model
-in detect.py we use MultiBackend as a wrapper of the yolo9 Model. 
+
+in detect.py we use MultiBackend as a wrapper of the yolo9 Model.
 for now we'll only use pytorch as backend.
 The model to load will be a variation of the mutibackend class. It'll take the path when pt (for pytorch) is true and all the other flags (tf, onnic savedmodel ..) are false.
 
@@ -803,7 +856,7 @@ class DetectPytorchBackend(nn.Module):
 
         from detector.yolo9.models.experimental import  attempt_load  # scoped to avoid circular import
 
-  
+
 
         super().__init__()
 
@@ -825,7 +878,7 @@ class DetectPytorchBackend(nn.Module):
 
         #     w = attempt_download(w)  # download if not local
 
-  
+
 
         if pt:  # PyTorch
 
@@ -843,7 +896,7 @@ class DetectPytorchBackend(nn.Module):
 
             raise NotImplementedError(f'ERROR: {w} is not a supported format')
 
-  
+
 
         # class names
 
@@ -855,11 +908,11 @@ class DetectPytorchBackend(nn.Module):
 
             names = yaml_load(ROOT / 'data/ImageNet.yaml')['names']  # human-readable names
 
-  
+
 
         self.__dict__.update(locals())  # assign all variables to self
 
-  
+
 
     def forward(self, im, augment=False, visualize=False):
 
@@ -875,7 +928,7 @@ class DetectPytorchBackend(nn.Module):
 
         #     im = im.permute(0, 2, 3, 1)  # torch BCHW to numpy BHWC shape(1,320,192,3)
 
-  
+
 
         if self.pt:  # PyTorch
 
@@ -889,13 +942,13 @@ class DetectPytorchBackend(nn.Module):
 
             return self.from_numpy(y)
 
-  
+
 
     def from_numpy(self, x):
 
         return torch.from_numpy(x).to(self.device) if isinstance(x, np.ndarray) else x
 
-  
+
 
     def warmup(self, imgsz=(1, 3, 640, 640)):
 
@@ -909,6 +962,9 @@ class DetectPytorchBackend(nn.Module):
 
             self.forward(im)  # warmup
 ```
+
 ##### when testing
-we need to install to the alphapose env (which happens to the lcoal env  ) pf : we'll get the version in the requirements.txt of yolo9 repo (and fingers crossed)
-### r 
+
+we need to install to the alphapose env (which happens to the lcoal env ) pf : we'll get the version in the requirements.txt of yolo9 repo (and fingers crossed)
+
+### r

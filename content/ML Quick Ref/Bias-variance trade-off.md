@@ -1,0 +1,4 @@
+**Bias**:  refers to **the error** introduced by approximating a real-world problem with a simplified model. A high-bias model oversimplifies the problem and fails to capture the underlying patterns in the data, leading to [[Underfitting]].
+**Variance** :measures the sensitivity of the model to the specific training data. A high-variance model is too complex and fits the training data too closely, including any noise or random fluctuations present.
+This leads to [[Overfitting]], 
+The bias-variance trade-off states that as you increase the complexity of a model to reduce bias (underfitting), the variance (overfitting) increases, and vice versa. The goal is to find the right balance between the two to minimize the total error on new data.

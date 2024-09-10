@@ -1,3 +1,7 @@
+---
+draft: true
+---
+
 ```python
 from itertools import count
 
@@ -47,18 +51,18 @@ class DetfileVideoDetectionLoader():
 
         stream.release()
 
-  
-  
+
+
 
         self._input_size = cfg.DATA_PRESET.IMAGE_SIZE
 
         self._output_size = cfg.DATA_PRESET.HEATMAP_SIZE
 
-  
+
 
         self._sigma = cfg.DATA_PRESET.SIGMA
 
-  
+
 
         if cfg.DATA_PRESET.TYPE == 'simple':
 
@@ -116,7 +120,7 @@ class DetfileVideoDetectionLoader():
 
                 loss_type=cfg.LOSS['TYPE'])
 
-  
+
 
         # initialize the det file list        
 
@@ -140,7 +144,7 @@ class DetfileVideoDetectionLoader():
 
             # bbox = [x1, y1, x1 + w, y1 + h]
 
-  
+
 
             # score = det_res['score']
 
@@ -156,7 +160,7 @@ class DetfileVideoDetectionLoader():
 
             #     self.all_ids[img_name].append(0)
 
-  
+
 
         # initialize the queue used to store data
 
@@ -182,11 +186,11 @@ class DetfileVideoDetectionLoader():
 
             self.pose_queue = mp.Queue(maxsize=queueSize)
 
-  
+
 
         print("init queues done ................")
 
-  
+
 
     def start_worker(self, target):
 
@@ -202,11 +206,11 @@ class DetfileVideoDetectionLoader():
 
         p.start()
 
-  
+
 
         return p
 
-  
+
 
     def start(self):
 
@@ -218,11 +222,11 @@ class DetfileVideoDetectionLoader():
 
         print("starting threads done ................")
 
-  
+
 
         return [get_detection_worker,image_postprocess_worker]
 
-  
+
 
     def stop(self):
 
@@ -230,7 +234,7 @@ class DetfileVideoDetectionLoader():
 
         self.clear_queues()
 
-  
+
 
     def terminate(self):
 
@@ -244,13 +248,13 @@ class DetfileVideoDetectionLoader():
 
         self.stop()
 
-  
+
 
     def clear_queues(self):
 
         self.clear(self.pose_queue)
 
-  
+
 
     def clear(self, queue):
 
@@ -258,7 +262,7 @@ class DetfileVideoDetectionLoader():
 
             queue.get()
 
-  
+
 
     def wait_and_put(self, queue, item):
 
@@ -266,7 +270,7 @@ class DetfileVideoDetectionLoader():
 
             queue.put(item)
 
-  
+
 
     def wait_and_get(self, queue):
 
@@ -274,7 +278,7 @@ class DetfileVideoDetectionLoader():
 
             return queue.get()
 
-  
+
 
     def get_detection(self):
 
@@ -350,21 +354,21 @@ class DetfileVideoDetectionLoader():
 
                 self.wait_and_put(self.det_queue, (orig_img, im_name, boxes, scores, ids, inps, cropped_boxes))
 
-  
+
 
         # Release the video capture object
 
         cap.release()
 
-  
+
 
         # Signal end of detections
 
         self.wait_and_put(self.det_queue, (None, None, None, None, None, None, None))
 
-  
-  
-  
+
+
+
 
 # equivalent to postprocess in other dataloader
 
@@ -398,22 +402,22 @@ class DetfileVideoDetectionLoader():
 
                     cropped_boxes[i] = torch.FloatTensor(cropped_box)
 
-  
+
 
                 # inps, cropped_boxes = self.transformation.align_transform(orig_img, boxes)
 
-  
+
 
                 self.wait_and_put(self.pose_queue, (inps, orig_img, im_name, boxes, scores, ids, cropped_boxes))
 
-  
-  
+
+
 
     def read(self):
 
         return self.wait_and_get(self.pose_queue)
 
-  
+
 
     @property
 
@@ -433,7 +437,7 @@ class DetfileVideoDetectionLoader():
 
         return self.datalen
 
-  
+
 
     @property
 
