@@ -1,0 +1,2 @@
+Intersection over Union (IoU) is the ratio of the intersection area to the union area of the predicted bounding box and the ground truth bounding box (see Figure 3). It measures the overlap between the ground truth and predicted bounding boxes
+![[IOU.png]]

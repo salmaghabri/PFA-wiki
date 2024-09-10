@@ -1,0 +1,2 @@
+- MS COCO (Microsoft Common Objects in Context) is a large-scale dataset of images that are annotated with object detection and segmentation information.
+- It contains over 330,000 images with 80 common object categories, making it a widely used benchmark for training and evaluating computer vision models.
