@@ -1,6 +1,6 @@
 ---
-paper: https://arxiv.org/abs/1603.07285
-resource: https://github.com/vdumoulin/conv_arithmetic/blob/master/README.md
+paper: 
+resource:
 ---
 
 affine transformations: a vector is received as input and is multiplied with a matrix to produce an output (to which a bias vector is usually added before passing the result through a nonlinearity).
@@ -22,3 +22,7 @@ A discrete convolution is a linear transformation that preserves this notion of 
 - Note that strides constitute a form of subsampling.
 - As an alternative to being interpreted as a measure of how much the kernel is translated, strides can also be viewed as how much of the output is retained.
 ![[Descrete Convolution-1.png]]
+
+---
+https://github.com/vdumoulin/conv_arithmetic/blob/master/README.md
+https://arxiv.org/abs/1603.07285
